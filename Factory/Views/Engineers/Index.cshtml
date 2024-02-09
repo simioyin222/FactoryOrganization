@@ -1,0 +1,31 @@
+@model IEnumerable<Factory.Models.Engineer>
+
+<h2>Engineers</h2>
+
+<p>
+    <a asp-action="Create">Create New Engineer</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var engineer in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => engineer.Name)
+        </td>
+        <td>
+            <a asp-action="Edit" asp-route-id="@engineer.EngineerId">Edit</a> |
+            <a asp-action="Details" asp-route-id="@engineer.EngineerId">Details</a> |
+            <a asp-action="Delete" asp-route-id="@engineer.EngineerId">Delete</a>
+        </td>
+    </tr>
+}
+    </tbody>
+</table>
