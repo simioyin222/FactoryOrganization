@@ -1,31 +1,40 @@
-var builder = WebApplication.CreateBuilder(args);
+using Microsoft.AspNetCore.Builder;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using Factory.Models;
 
-// Add services to the container.
-builder.Services.AddControllersWithViews();
-
-// Simplified EF Core with MySQL configuration
-builder.Services.AddDbContext<FactoryContext>(options =>
-    options.UseMySql(builder.Configuration.GetConnectionString("DefaultConnection"), 
-    ServerVersion.AutoDetect(builder.Configuration.GetConnectionString("DefaultConnection"))));
-
-var app = builder.Build();
-
-// Configure the HTTP request pipeline.
-if (!app.Environment.IsDevelopment())
+namespace Factory
 {
-    app.UseExceptionHandler("/Home/Error");
-    app.UseHsts();
+  class Program
+  {
+    static void Main(string[] args)
+    {
+      WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
+
+      builder.Services.AddControllersWithViews();
+
+      builder.Services.AddDbContext<FactoryContext>(
+        dbContextOptions => dbContextOptions
+          .UseMySql(
+            builder.Configuration["ConnectionStrings:DefaultConnection"], ServerVersion.AutoDetect(builder.Configuration["ConnectionStrings:DefaultConnection"]
+          )
+        )
+      );
+
+      WebApplication app = builder.Build();
+
+      // app.UseDeveloperExceptionPage();
+      app.UseHttpsRedirection();
+      app.UseStaticFiles();
+
+      app.UseRouting();
+
+      app.MapControllerRoute(
+        name: "default",
+        pattern: "{controller=Home}/{action=Index}/{id?}"
+      );
+
+      app.Run();
+    }
+  }
 }
-
-app.UseHttpsRedirection();
-app.UseStaticFiles();
-
-app.UseRouting();
-
-app.UseAuthorization();
-
-app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
-
-app.Run();
