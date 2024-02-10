@@ -1,6 +1,8 @@
 ﻿using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using Factory.Models;
+using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 namespace Factory.Controllers;
 
@@ -14,9 +16,14 @@ public class HomeController : Controller
     }
 
     public IActionResult Index()
+{
+    var viewModel = new HomeIndexViewModel
     {
-        return View();
-    }
+        Engineers = _db.Engineers.ToList(),
+        Machines = _db.Machines.ToList()
+    };
+    return View(viewModel);
+}
 
     public IActionResult Privacy()
     {
