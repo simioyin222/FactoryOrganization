@@ -7,32 +7,32 @@ namespace Factory.Controllers;
 
 public class HomeController : Controller
 {
-    private readonly FactoryContext _db;
+  private readonly FactoryContext _db;
 
-    
-    public HomeController(FactoryContext db)
-    {
-        _db = db;
-    }
+  
+  public HomeController(FactoryContext db)
+  {
+    _db = db;
+  }
 
-    public IActionResult Index()
+  public IActionResult Index()
+  {
+    var viewModel = new HomeIndexViewModel
     {
-        var viewModel = new HomeIndexViewModel
-        {
-            Engineers = _db.Engineers.ToList(),
-            Machines = _db.Machines.ToList()
-        };
-        return View(viewModel);
-    }
+      Engineers = _db.Engineers.ToList(),
+      Machines = _db.Machines.ToList()
+    };
+    return View(viewModel);
+  }
 
-    public IActionResult Privacy()
-    {
-        return View();
-    }
+  public IActionResult Privacy()
+  {
+    return View();
+  }
 
-    [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-    public IActionResult Error()
-    {
-        return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-    }
+  [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+  public IActionResult Error()
+  {
+    return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+  }
 }

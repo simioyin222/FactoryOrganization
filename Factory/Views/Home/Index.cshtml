@@ -1,32 +1,32 @@
 ﻿@model Factory.Models.HomeIndexViewModel
 
 @{
-    ViewData["Title"] = "Home Page";
+  ViewData["Title"] = "Home Page";
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome to Dr. Sillystringz's Factory</h1>
-    <p>Learn about building Web apps with ASP.NET Core <a href="https://docs.microsoft.com/aspnet/core">here</a>.</p>
+  <h1 class="display-4">Welcome to Dr. Sillystringz's Factory</h1>
+  <p>Learn about building Web apps with ASP.NET Core <a href="https://docs.microsoft.com/aspnet/core">here</a>.</p>
 </div>
 
 <hr>
 
 <div>
-    <h2>Engineers</h2>
-    <ul>
-        @foreach (var engineer in Model.Engineers)
-        {
-            <li>@Html.ActionLink(engineer.Name, "Details", "Engineers", new { id = engineer.EngineerId }, null)</li>
-        }
-    </ul>
+  <h2>Engineers</h2>
+  <ul>
+  @foreach (var engineer in Model.Engineers)
+  {
+    <li>@Html.ActionLink(engineer.Name, "Details", "Engineers", new { id = engineer.EngineerId }, null)</li>
+  }
+  </ul>
 </div>
 
 <div>
-    <h2>Machines</h2>
-    <ul>
-        @foreach (var machine in Model.Machines)
-        {
-            <li>@Html.ActionLink(machine.Name, "Details", "Machines", new { id = machine.MachineId }, null)</li>
-        }
-    </ul>
+  <h2>Machines</h2>
+  <ul>
+  @foreach (var machine in Model.Machines)
+  {
+    <li>@Html.ActionLink(machine.Name, "Details", "Machines", new { id = machine.MachineId }, null)</li>
+  }
+  </ul>
 </div>
