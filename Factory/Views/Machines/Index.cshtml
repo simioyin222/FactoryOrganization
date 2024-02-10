@@ -3,29 +3,29 @@
 <h2>Machines</h2>
 
 <p>
-    <a asp-action="Create">Create New Machine</a>
+  <a asp-action="Create">Create New Machine</a>
 </p>
 <table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Name)
-            </th>
-            <th>Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var machine in Model) {
+  <thead>
     <tr>
-        <td>
-            @Html.DisplayFor(modelItem => machine.Name)
-        </td>
-        <td>
-            <a asp-action="Edit" asp-route-id="@machine.MachineId">Edit</a> |
-            <a asp-action="Details" asp-route-id="@machine.MachineId">Details</a> |
-            <a asp-action="Delete" asp-route-id="@machine.MachineId">Delete</a>
-        </td>
+      <th>
+        @Html.DisplayNameFor(model => model.Name)
+      </th>
+      <th>Actions</th>
     </tr>
+  </thead>
+  <tbody>
+@foreach (var machine in Model) {
+  <tr>
+    <td>
+      @Html.DisplayFor(modelItem => machine.Name)
+    </td>
+    <td>
+      <a asp-action="Edit" asp-route-id="@machine.MachineId">Edit</a> |
+      <a asp-action="Details" asp-route-id="@machine.MachineId">Details</a> |
+      <a asp-action="Delete" asp-route-id="@machine.MachineId">Delete</a>
+    </td>
+  </tr>
 }
-    </tbody>
+  </tbody>
 </table>

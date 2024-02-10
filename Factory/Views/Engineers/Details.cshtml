@@ -6,15 +6,15 @@
   <h4>@Model.Name</h4>
   <hr />
   <dl class="row">
-    <dt class="col-sm-2">
-      Machines Licensed to Repair:
-    </dt>
-    <dd class="col-sm-10">
-      @foreach (var em in Model.Machines)
-      {
-        <div>@em.Machine.Name</div>
-      }
-    </dd>
+  <dt class="col-sm-2">
+    Machines Licensed to Repair:
+  </dt>
+  <dd class="col-sm-10">
+    @foreach (var em in Model.Machines)
+    {
+    <div>@em.Machine.Name</div>
+    }
+  </dd>
   </dl>
 </div>
 <div>
