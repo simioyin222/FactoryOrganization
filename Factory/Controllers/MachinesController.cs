@@ -30,13 +30,116 @@ namespace Factory.Controllers
       }
 
       var machine = await _db.Machines
-        .FirstOrDefaultAsync(m => m.MachineId == id);
+          .FirstOrDefaultAsync(m => m.MachineId == id);
       if (machine == null)
       {
         return NotFound();
       }
 
       return View(machine);
+    }
+
+    // GET: Machines/Create
+    public IActionResult Create()
+    {
+      return View();
+    }
+
+    // POST: Machines/Create
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Create([Bind("MachineId,Name")] Machine machine)
+    {
+      if (ModelState.IsValid)
+      {
+        _db.Add(machine);
+        await _db.SaveChangesAsync();
+        return RedirectToAction(nameof(Index));
+      }
+      return View(machine);
+    }
+
+    // GET: Machines/Edit/5
+    public async Task<IActionResult> Edit(int? id)
+    {
+      if (id == null)
+      {
+        return NotFound();
+      }
+
+      var machine = await _db.Machines.FindAsync(id);
+      if (machine == null)
+      {
+        return NotFound();
+      }
+      return View(machine);
+    }
+
+    // POST: Machines/Edit/5
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Edit(int id, [Bind("MachineId,Name")] Machine machine)
+    {
+      if (id != machine.MachineId)
+      {
+        return NotFound();
+      }
+
+      if (ModelState.IsValid)
+      {
+        try
+        {
+          _db.Update(machine);
+          await _db.SaveChangesAsync();
+        }
+        catch (DbUpdateConcurrencyException)
+        {
+          if (!MachineExists(machine.MachineId))
+          {
+            return NotFound();
+          }
+          else
+          {
+            throw;
+          }
+        }
+        return RedirectToAction(nameof(Index));
+      }
+      return View(machine);
+    }
+
+    // GET: Machines/Delete/5
+    public async Task<IActionResult> Delete(int? id)
+    {
+      if (id == null)
+      {
+        return NotFound();
+      }
+
+      var machine = await _db.Machines
+          .FirstOrDefaultAsync(m => m.MachineId == id);
+      if (machine == null)
+      {
+        return NotFound();
+      }
+
+      return View(machine);
+    }
+
+    // POST: Machines/Delete/5
+    [HttpPost, ActionName("Delete")]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> DeleteConfirmed(int id)
+    {
+      var machine = await _db.Machines.FindAsync(id);
+      _db.Machines.Remove(machine);
+      await _db.SaveChangesAsync();
+      return RedirectToAction(nameof(Index));
+    }
+
+    private bool MachineExists(int id)
+    {
+      return _db.Machines.Any(e => e.MachineId == id);
     }
   }
 }
