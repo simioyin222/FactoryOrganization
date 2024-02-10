@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Factory.Models;
 using System.Linq;
-using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Factory.Controllers
 {
@@ -15,149 +15,84 @@ namespace Factory.Controllers
   _db = db;
   }
 
-  // GET: Engineers
-  public async Task<IActionResult> Index()
+  public IActionResult Index()
   {
-  return View(await _db.Engineers.ToListAsync());
+  return View(_db.Engineers.ToList());
   }
 
-  // GET: Engineers/Details/5
-  public async Task<IActionResult> Details(int? id)
+  public IActionResult Details(int id)
   {
-  if (id == null)
-  {
-  return NotFound();
+  var thisEngineer = _db.Engineers
+  .Include(engineer => engineer.Machines)
+  .ThenInclude(join => join.Machine)
+  .FirstOrDefault(engineer => engineer.EngineerId == id);
+  return View(thisEngineer);
   }
 
-  var engineer = await _db.Engineers
-  .FirstOrDefaultAsync(m => m.EngineerId == id);
-  if (engineer == null)
-  {
-  return NotFound();
-  }
-
-  return View(engineer);
-  }
-
-  // GET: Engineers/Create
   public IActionResult Create()
   {
   return View();
   }
 
-  // POST: Engineers/Create
   [HttpPost]
-  [ValidateAntiForgeryToken]
-  public async Task<IActionResult> Create([Bind("EngineerId,Name")] Engineer engineer)
+  public IActionResult Create(Engineer engineer)
   {
-  if (ModelState.IsValid)
-  {
-  _db.Add(engineer);
-  await _db.SaveChangesAsync();
-  return RedirectToAction(nameof(Index));
-  }
-  return View(engineer);
-  }
-
-  // GET: Engineers/Edit/5
-  public async Task<IActionResult> Edit(int? id)
-  {
-  if (id == null)
-  {
-  return NotFound();
-  }
-
-  var engineer = await _db.Engineers.FindAsync(id);
-  if (engineer == null)
-  {
-  return NotFound();
-  }
-  return View(engineer);
-  }
-
-  // POST: Engineers/Edit/5
-  [HttpPost]
-  [ValidateAntiForgeryToken]
-  public async Task<IActionResult> Edit(int id, [Bind("EngineerId,Name")] Engineer engineer)
-  {
-  if (id != engineer.EngineerId)
-  {
-  return NotFound();
-  }
-
-  if (ModelState.IsValid)
-  {
-  try
-  {
-    _db.Update(engineer);
-    await _db.SaveChangesAsync();
-  }
-  catch (DbUpdateConcurrencyException)
-  {
-    if (!EngineerExists(engineer.EngineerId))
-    {
-    return NotFound();
-    }
-    else
-    {
-    throw;
-    }
-  }
-  return RedirectToAction(nameof(Index));
-  }
-  return View(engineer);
-  }
-
-  // GET: Engineers/Delete/5
-  public async Task<IActionResult> Delete(int? id)
-  {
-  if (id == null)
-  {
-  return NotFound();
-  }
-
-  var engineer = await _db.Engineers
-  .FirstOrDefaultAsync(m => m.EngineerId == id);
-  if (engineer == null)
-  {
-  return NotFound();
-  }
-
-  return View(engineer);
-  }
-
-  // POST: Engineers/Delete/5
-  [HttpPost, ActionName("Delete")]
-  [ValidateAntiForgeryToken]
-  public async Task<IActionResult> DeleteConfirmed(int id)
-  {
-  var engineer = await _db.Engineers.FindAsync(id);
-  _db.Engineers.Remove(engineer);
-  await _db.SaveChangesAsync();
-  return RedirectToAction(nameof(Index));
-  }
-
-  public IActionResult AddMachine(int id)
-{
-  var thisEngineer = _db.Engineers.FirstOrDefault(engineer => engineer.EngineerId == id);
-  ViewBag.MachineId = new SelectList(_db.Machines, "MachineId", "Name");
-  return View(thisEngineer);
-}
-
-[HttpPost]
-public IActionResult AddMachine(Engineer engineer, int MachineId)
-{
-  if (MachineId != 0)
-  {
-    _db.EngineerMachine.Add(new EngineerMachine { EngineerId = engineer.EngineerId, MachineId = MachineId });
-    _db.SaveChanges();
-  }
+  _db.Engineers.Add(engineer);
+  _db.SaveChanges();
   return RedirectToAction("Index");
+  }
+
+  public IActionResult Edit(int id)
+  {
+  var thisEngineer = _db.Engineers.FirstOrDefault(engineers => engineers.EngineerId == id);
+  return View(thisEngineer);
+  }
+
+  [HttpPost]
+  public IActionResult Edit(Engineer engineer)
+  {
+  _db.Entry(engineer).State = EntityState.Modified;
+  _db.SaveChanges();
+  return RedirectToAction("Index");
+  }
+
+  public IActionResult Delete(int id)
+  {
+  var thisEngineer = _db.Engineers.FirstOrDefault(engineers => engineers.EngineerId == id);
+  return View(thisEngineer);
+  }
+
+  [HttpPost, ActionName("Delete")]
+  public IActionResult DeleteConfirmed(int id)
+  {
+  var thisEngineer = _db.Engineers.FirstOrDefault(engineers => engineers.EngineerId == id);
+  _db.Engineers.Remove(thisEngineer);
+  _db.SaveChanges();
+  return RedirectToAction("Index");
+  }
+
+  public ActionResult AddMachine(int id)
+{
+  var engineer = _db.Engineers.Include(e => e.Machines).ThenInclude(em => em.Machine).FirstOrDefault(e => e.EngineerId == id);
+  if (engineer == null)
+  {
+  return NotFound();
+  }
+  var engineerMachine = new EngineerMachine { EngineerId = id, Engineer = engineer }; // Ensure Engineer is loaded
+  ViewBag.MachineId = new SelectList(_db.Machines, "MachineId", "Name");
+  return View(engineerMachine);
 }
 
-  private bool EngineerExists(int id)
+  [HttpPost]
+  public IActionResult AddMachine(EngineerMachine engineerMachine)
   {
-  return _db.Engineers.Any(e => e.EngineerId == id);
+  if (_db.EngineerMachines.Any(em => em.EngineerId == engineerMachine.EngineerId && em.MachineId == engineerMachine.MachineId))
+  {
+  return RedirectToAction(nameof(Details), new { id = engineerMachine.EngineerId });
+  }
+  _db.EngineerMachines.Add(engineerMachine);
+  _db.SaveChanges();
+  return RedirectToAction(nameof(Details), new { id = engineerMachine.EngineerId });
   }
   }
 }

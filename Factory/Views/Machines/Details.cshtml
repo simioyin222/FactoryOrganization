@@ -12,7 +12,7 @@
   {
   foreach (var em in Model.Engineers)
   {
-    <div>@em.Engineer.Name</div>
+  <div>@em.Engineer.Name</div>
   }
   }
   else
@@ -23,6 +23,7 @@
   </dl>
 </div>
 <div>
+  <a asp-action="AddEngineer" asp-route-id="@Model.MachineId">Add Engineer</a>
   <a asp-action="Edit" asp-route-id="@Model.MachineId">Edit</a> |
   <a asp-action="Delete" asp-route-id="@Model.MachineId">Delete</a> |
   <a asp-action="Index">Back to list</a>

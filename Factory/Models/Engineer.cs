@@ -6,7 +6,7 @@ namespace Factory.Models
   {
   public Engineer()
   {
-    this.Machines = new HashSet<EngineerMachine>();
+  this.Machines = new HashSet<EngineerMachine>();
   }
 
   public int EngineerId { get; set; }

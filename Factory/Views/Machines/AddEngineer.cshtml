@@ -1,0 +1,33 @@
+@model Factory.Models.EngineerMachine
+
+@{
+  ViewData["Title"] = "Add Engineer";
+}
+
+<h2>Add Engineer to @Model.Machine.Name</h2>
+
+@if (ViewBag.EngineerId != null && ((SelectList)ViewBag.EngineerId).Count() > 0)
+{
+  <form asp-action="AddEngineer" method="post">
+  <input type="hidden" asp-for="MachineId" />
+  <div class="form-group">
+  <label asp-for="EngineerId" class="control-label">Select Engineer</label>
+  <select asp-for="EngineerId" class="form-control" asp-items="ViewBag.EngineerId" required>
+  <option value="">Please select an engineer</option>
+  </select>
+  </div>
+  <div class="form-group">
+  <input type="submit" value="Add Engineer" class="btn btn-primary" />
+  </div>
+  </form>
+}
+else
+{
+  <div class="alert alert-warning" role="alert">
+  No engineers available to add. Please add an engineer first.
+  </div>
+}
+
+<div>
+  <a asp-action="Details" asp-route-id="@Model.MachineId">Back to Machine Details</a>
+</div>
