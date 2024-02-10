@@ -1,29 +1,29 @@
 ﻿using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using Factory.Models;
-using Microsoft.EntityFrameworkCore;
 using System.Linq;
 
 namespace Factory.Controllers;
 
 public class HomeController : Controller
 {
-    private readonly ILogger<HomeController> _logger;
+    private readonly FactoryContext _db;
 
-    public HomeController(ILogger<HomeController> logger)
+    
+    public HomeController(FactoryContext db)
     {
-        _logger = logger;
+        _db = db;
     }
 
     public IActionResult Index()
-{
-    var viewModel = new HomeIndexViewModel
     {
-        Engineers = _db.Engineers.ToList(),
-        Machines = _db.Machines.ToList()
-    };
-    return View(viewModel);
-}
+        var viewModel = new HomeIndexViewModel
+        {
+            Engineers = _db.Engineers.ToList(),
+            Machines = _db.Machines.ToList()
+        };
+        return View(viewModel);
+    }
 
     public IActionResult Privacy()
     {
