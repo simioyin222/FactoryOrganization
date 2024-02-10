@@ -38,5 +38,27 @@ namespace Factory.Controllers
 
             return View(engineer);
         }
-		}
+
+        // GET: Engineers/Create
+        public IActionResult Create()
+        {
+            return View();
+        }
+
+        // POST: Engineers/Create
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create([Bind("EngineerId,Name")] Engineer engineer)
+        {
+            if (ModelState.IsValid)
+            {
+                _db.Add(engineer);
+                await _db.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            return View(engineer);
+        }
+
+        // Add Edit and Delete actions here
+    }
 }
