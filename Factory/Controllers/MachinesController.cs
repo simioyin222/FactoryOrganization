@@ -20,5 +20,23 @@ namespace Factory.Controllers
     {
       return View(await _db.Machines.ToListAsync());
     }
+
+    // GET: Machines/Details/5
+    public async Task<IActionResult> Details(int? id)
+    {
+      if (id == null)
+      {
+        return NotFound();
+      }
+
+      var machine = await _db.Machines
+        .FirstOrDefaultAsync(m => m.MachineId == id);
+      if (machine == null)
+      {
+        return NotFound();
+      }
+
+      return View(machine);
+    }
   }
 }
