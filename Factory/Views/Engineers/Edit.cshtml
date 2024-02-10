@@ -1,0 +1,17 @@
+@model Factory.Models.Engineer
+
+<h2>Edit Engineer</h2>
+
+<form asp-action="Edit">
+    <input type="hidden" asp-for="EngineerId" />
+    <div class="form-group">
+        <label asp-for="Name" class="control-label"></label>
+        <input asp-for="Name" class="form-control" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+    <input type="submit" value="Save" class="btn btn-primary" />
+</form>
+
+<div>
+    <a asp-action="Index">Back to list</a>
+</div>

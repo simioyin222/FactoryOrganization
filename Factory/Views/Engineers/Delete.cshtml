@@ -1,0 +1,11 @@
+@model Factory.Models.Engineer
+
+<h2>Delete Engineer</h2>
+
+<h3>Are you sure you want to delete this engineer: @Model.Name?</h3>
+
+<form asp-action="Delete">
+    <input type="hidden" asp-for="EngineerId" />
+    <input type="submit" value="Delete" class="btn btn-danger" /> |
+    <a asp-action="Index">Cancel</a>
+</form>
