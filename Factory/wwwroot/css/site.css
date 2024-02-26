@@ -21,7 +21,7 @@ body, html {
   padding: 20px;
 }
 
-/* Responsive adjustments */
+/* Responsive change */
 @media only screen and (max-width: 768px) {
   .sidebar {
     width: 100%;
@@ -31,4 +31,19 @@ body, html {
   .main-content {
     margin-left: 0;
   }
+}
+
+:root {
+  --background-color: #ffffff;
+  --text-color: #000000;
+}
+
+.dark-mode {
+  --background-color: #333333;
+  --text-color: #ffffff;
+}
+
+body {
+  background-color: var(--background-color);
+  color: var(--text-color);
 }
