@@ -47,3 +47,29 @@ body {
   background-color: var(--background-color);
   color: var(--text-color);
 }
+
+#kanban-board {
+  display: flex;
+  justify-content: space-around;
+  padding: 20px;
+}
+
+.kanban-column {
+  width: 30%;
+  background-color: #333333;
+  margin: 0 10px;
+  border-radius: 5px;
+  padding: 10px;
+}
+
+.kanban-column h2 {
+  text-align: center;
+}
+
+.tasks {
+  min-height: 200px;
+}
+
+ {
+  background-color: #333333; /* GREY  background for new items */
+}

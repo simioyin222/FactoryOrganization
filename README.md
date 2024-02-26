@@ -85,6 +85,9 @@ Please report any bugs to simi.oyinkolade@gmail.com.
 
 ## Contributing
 Contributions to improve the application are welcome. Fork the repository, make your changes, and submit a pull request.
+- Please let me know if you know how to change the color or make text bold for the machine and engineer text result/inputs 
+- Please let me know if you know how to live change engineers and machines being added to card "To Do"  then once relationship made or add one to the other 
+it should update to the "In Progress" card then once deleted in the the "Done" card.
 
 ### License
 
